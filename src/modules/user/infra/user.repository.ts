@@ -1,11 +1,12 @@
 import { Prisma, PrismaClient } from "@prisma/client";
+import prismaClient from "../../../config/prisma";
 import { UserModel } from "../domain/user.model";
 
-export class UserRepository implements UserRepository {
+export class UserRepository {
     private prisma: PrismaClient;
 
-    constructor(prisma: PrismaClient) {
-        this.prisma = prisma;
+    constructor() {
+        this.prisma = prismaClient;
     }
 
     async create(data: Prisma.UserCreateInput): Promise<Omit<UserModel, "password">> {
@@ -20,3 +21,5 @@ export class UserRepository implements UserRepository {
         return this.prisma.user.findUnique({ where: { email } });
     }
 }
+
+export const userRepositoryImpl = new UserRepository();

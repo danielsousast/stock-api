@@ -1,12 +1,11 @@
-import { CreateUserDTO } from "../../domain/user.dtos";
-import { UserModel } from "../../domain/user.model";
-import { CreateUserService } from "../services/create-user";
+import { CreateUserDTO, UserModel } from "../../domain";
+import { createUserServiceImpl } from "../services";
 
-export class CreateUserController {
-  constructor(private readonly userService: CreateUserService) { }
-
-
-  async handle(data: CreateUserDTO): Promise<Omit<UserModel, "password">> {
-    return this.userService.execute(data);
+class CreateUserController {
+  async handle(data: Request): Promise<Omit<UserModel, "password">> {
+    console.log('CreateUserController -> handle -> data', data);
+    return await createUserServiceImpl.execute(data.body as unknown as CreateUserDTO);
   }
 }
+
+export const createUserController = new CreateUserController();
