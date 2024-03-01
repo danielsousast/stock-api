@@ -14,11 +14,35 @@ export class UserRepository {
     }
 
     async findById(id: string): Promise<UserModel | null> {
-        return this.prisma.user.findUnique({ where: { id } });
+        return this.prisma.user.findUnique({
+            where: { id }, select: {
+                id: true,
+                name: true,
+                email: true,
+                created_at: true,
+                updated_at: true
+            }
+        });
     }
 
     async findByEmail(email: string): Promise<UserModel | null> {
-        return this.prisma.user.findUnique({ where: { email } });
+        return this.prisma.user.findUnique({
+            where: { email }, select: {
+                id: true,
+                name: true,
+                email: true,
+                created_at: true,
+                updated_at: true
+            }
+        });
+    }
+
+    async removeById(id: string): Promise<void> {
+        await this.prisma.user.delete({ where: { id } });
+    }
+
+    async listAll(): Promise<UserModel[]> {
+        return this.prisma.user.findMany({ select: { id: true, name: true, email: true, created_at: true, updated_at: true } });
     }
 }
 

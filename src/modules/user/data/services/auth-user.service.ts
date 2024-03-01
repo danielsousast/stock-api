@@ -21,8 +21,10 @@ class AuthUserService {
             expiresIn: '10d'
         })
 
+        const { password: _, ...userWithoutPassword } = user;
+
         return {
-            ...user,
+            ...userWithoutPassword,
             token
         };
     }

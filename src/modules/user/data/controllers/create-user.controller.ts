@@ -1,10 +1,11 @@
-import { CreateUserDTO, UserModel } from "../../domain";
+import { Request, Response } from "express";
+import { CreateUserDTO } from "../../domain";
 import { createUserServiceImpl } from "../services";
 
 class CreateUserController {
-  async handle(data: Request): Promise<Omit<UserModel, "password">> {
-    console.log('CreateUserController -> handle -> data', data);
-    return await createUserServiceImpl.execute(data.body as unknown as CreateUserDTO);
+  async handle(request: Request, response: Response): Promise<Response> {
+    const user = await createUserServiceImpl.execute(request.body as unknown as CreateUserDTO);
+    return response.status(200).json(user);
   }
 }
 
